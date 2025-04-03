@@ -5,17 +5,14 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
-# Start timer
 start_time = time.time()
 
 # Load dataset
 df = pd.read_csv("student_health_data.csv")
 print("Processing Data")
 
-# Drop non-numeric or irrelevant columns
+#Organize Data
 df = df.drop(columns=["Student_ID"])  
-
-# Convert categorical values to numeric
 activity_mapping = {'Low': 1, 'Moderate': 2, 'High': 3}
 df['Physical_Activity'] = df['Physical_Activity'].map(activity_mapping)
 
@@ -31,18 +28,17 @@ df['Mood'] = df['Mood'].map(mood_mapping)
 HealthRisk_mapping = {'Low': 1, 'Moderate': 2, 'High': 3}
 df['Health_Risk_Level'] = df['Health_Risk_Level'].map(HealthRisk_mapping)
 
-# Separate features and target variable
+#Create Matrix System Elements
 X = df.drop(columns=["Health_Risk_Level"])
 y = df["Health_Risk_Level"]
 
-# Split into training and testing sets
+# Training and testing sets
 print("Training...")
 split_start = time.time()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 split_end = time.time()
 print(f"Data split time: {split_end - split_start:.4f} seconds")
 
-# Standardize features
 scale_start = time.time()
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
@@ -50,7 +46,6 @@ X_test = scaler.transform(X_test)
 scale_end = time.time()
 print(f"Scaling time: {scale_end - scale_start:.4f} seconds")
 
-# Train a RandomForest model
 train_start = time.time()
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
@@ -62,11 +57,7 @@ predict_start = time.time()
 y_pred = model.predict(X_test)
 predict_end = time.time()
 print(f"Prediction time: {predict_end - predict_start:.4f} seconds")
-
-# Print accuracy
 print("Accuracy:", accuracy_score(y_test, y_pred))
-
-# End timer
 end_time = time.time()
 print(f"Total execution time: {end_time - start_time:.4f} seconds")
 
