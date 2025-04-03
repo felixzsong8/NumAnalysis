@@ -5,10 +5,8 @@ import numpy as np
 df = pd.read_csv("student_health_data.csv")
 print("Processing Data")
 
-# Drop non-numeric or irrelevant columns
+#Organize data
 df = df.drop(columns=["Student_ID"])  
-#print(df.columns)
-# Convert categorical values to numeric
 activity_mapping = {'Low': 1, 'Moderate': 2, 'High': 3}
 df['Physical_Activity'] = df['Physical_Activity'].map(activity_mapping)
 
@@ -24,7 +22,7 @@ df['Mood'] = df['Mood'].map(mood_mapping)
 HealthRisk_mapping = {'Low': 1, 'Moderate': 2, 'High': 3}
 df['Health_Risk_Level'] = df['Health_Risk_Level'].map(HealthRisk_mapping)
 
-# Separate features and target variable
+#Create Matrix System Elements
 X = df.drop(columns=["Health_Risk_Level"])
 y = df["Health_Risk_Level"]
 
